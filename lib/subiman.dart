@@ -2,7 +2,6 @@ import 'package:args/command_runner.dart';
 
 import 'src/app.dart';
 import 'src/commands/dry_run.dart';
-import 'src/commands/git.dart';
 import 'src/commands/http.dart';
 
 class SubiquityManager {
@@ -10,8 +9,6 @@ class SubiquityManager {
     final runner = CommandRunner<void>(kAppName, kAppDescription);
     runner.addCommand(DryRunCommand());
     runner.addCommand(HttpCommand());
-    runner.addCommand(InfoCommand());
-    runner.addCommand(UpdateCommand());
     try {
       await runner.run(args);
     } on UsageException catch (e) {
