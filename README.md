@@ -4,6 +4,8 @@ Manage [Subiquity](https://github.com/canonical/subiquity) for
 [Ubuntu Desktop Installer](https://github.com/canonical/ubuntu-desktop-installer)
 
 ```
+Manage Subiquity for Ubuntu Desktop Installer
+
 Usage: subiman <command> [arguments]
 
 Global options:
@@ -12,8 +14,7 @@ Global options:
 Available commands:
   dry-run   Dry-run Subiquity server
   http      Send HTTP request to Subiquity
-  status    Subiquity submodule status
-  update    Update Subiquity submodule
+  install   Install Subiquity dependencies (sudo)
 
 Run "subiman help <command>" for more information about a command.
 ```
@@ -51,52 +52,15 @@ dependencies:
     git:
       url: https://github.com/canonical/ubuntu-desktop-installer.git
       path: packages/ubuntu_desktop_installer
-      ref: bdf041ab8184f2c82015abb2da48283dfc614fc6
+      ref: <sha1>
 ```
 
-# Subiquity submodule
+# Installing Subiquity dependencies
 
-`subiman info` prints the location and status of the `subiquity_client/subiquity`
-submodule. Typically, the submodule would be in `~/.pub-cache` where Dart fetches
-package dependencies.
-
-Initial uninitialized status:
-```sh
-$ subiman info
-<path/to>/subiquity_client/subiquity
--90a2bd6f7a754964f1f35028ebf97aa305b29de5 subiquity
-```
-
-`subiman update` initializes the `subiquity_client/subiquity` submodule:
-```sh
-$ subiman update
-<path/to>/subiquity_client/subiquity
-Submodule path 'subiquity': checked out '90a2bd6f7a754964f1f35028ebf97aa305b29de5'
-```
-
-Current up-to-date status:
-```sh
-$ subiman info
-<path/to>/subiquity_client/subiquity
- 90a2bd6f7a754964f1f35028ebf97aa305b29de5 subiquity
-```
-
-Outdated status after updating the (transitive) `subiquity_client` dependency:
-```sh
-$ subiman info
-<path/to>/subiquity_client/subiquity
-+34b621ee6627f85b44317f415b0d78dab9553cc5 subiquity (21.12.2-98-g34b621ee)
-* subiquity 90a2bd6f...34b621ee (3):
-  < Merge pull request #1173 from dbungert/os-prober-arch
-  < Merge pull request #1167 from dbungert/lp-1952603-nonet
-  < Merge pull request #1171 from ogayot/bump-curtin-version
-```
-
-```sh
-$ subiman update
-<path/to>/subiquity_client/subiquity
-Submodule path 'subiquity': checked out '90a2bd6f7a754964f1f35028ebf97aa305b29de5'
-```
+`subiman install` runs the `subiquity/scripts/installdeps.sh` script to install
+all dependencies required by Subiquity. Running the script requires super user
+privileges. You can pass `--verbose` to see the exact location of the script if
+you prefer to run it manually.
 
 # Testing Subiquity
 
